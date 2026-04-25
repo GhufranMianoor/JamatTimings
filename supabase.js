@@ -1,8 +1,9 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// Pull keys from the environment variables configured in `.env`
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-project-id.supabase.co';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-anon-key-here';
+// Safely handle environment variables for Vite/Production or hardcoded fallbacks for local testing
+const env = (import.meta && import.meta.env) ? import.meta.env : {};
+const supabaseUrl = env.VITE_SUPABASE_URL || 'https://obhqfydrmxlbxrwnewyg.supabase.co';
+const supabaseKey = env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_bxTOOk9wirsB2tOoy8JepQ_ueZ1MIrY';
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
