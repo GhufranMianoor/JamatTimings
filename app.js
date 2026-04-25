@@ -352,18 +352,59 @@ function setupEventListeners() {
 
   // PWA logic
   const installAppBtn = document.getElementById('install-app-btn');
+  const manualInstallModal = document.getElementById('manual-install-modal');
+  const manualInstallInstructions = document.getElementById('manual-install-instructions');
   let deferredPrompt;
+
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    if (installAppBtn) installAppBtn.classList.remove('hidden');
+    if (installAppBtn) installAppBtn.classList.replace('opacity-0', 'opacity-100');
   });
+
+  // Non-Chrome Fallbacks (Safari/Firefox)
+  if (!isStandalone && installAppBtn) {
+      const ua = navigator.userAgent.toLowerCase();
+      const isMobile = /iphone|ipad|ipod|android/.test(ua);
+      if (ua.includes('firefox') || (/safari/.test(ua) && !ua.includes('chrome'))) {
+          installAppBtn.classList.replace('opacity-0', 'opacity-100');
+      }
+  }
+
   installAppBtn?.addEventListener('click', async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') { installAppBtn.classList.add('hidden'); deferredPrompt = null; }
+      if (outcome === 'accepted') {
+          installAppBtn.classList.replace('opacity-100', 'opacity-0');
+          deferredPrompt = null;
+      }
+    } else if (manualInstallModal) {
+      const ua = navigator.userAgent.toLowerCase();
+      let inst = "To install this app, tap your browser's menu button and select <strong>Add to Home Screen</strong>.";
+      if (/ipad|iphone|ipod/.test(ua)) {
+          inst = "To install, tap the <strong>Share</strong> button below and select <strong>Add to Home Screen</strong>.";
+      } else if (ua.includes('firefox')) {
+          inst = "To install in Firefox, tap the <strong>Menu</strong> (three dots) > <strong>Install or Add to Home screen</strong>.";
+      }
+      manualInstallInstructions.innerHTML = inst;
+      manualInstallModal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+          manualInstallModal.classList.remove('opacity-0', 'pointer-events-none');
+          manualInstallModal.querySelector('div').classList.remove('scale-95');
+      });
     }
+  });
+
+  document.getElementById('close-install-modal-btn')?.addEventListener('click', () => {
+      manualInstallModal.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => manualInstallModal.classList.add('hidden'), 300);
+  });
+  document.getElementById('ok-install-modal-btn')?.addEventListener('click', () => {
+      manualInstallModal.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => manualInstallModal.classList.add('hidden'), 300);
   });
 }
 

@@ -104,7 +104,7 @@
           <h1 class="text-2xl font-extrabold text-[#2c1a0e] tracking-tight">Jamat Timings</h1>
       </div>
       <div class="flex items-center gap-3 text-right">
-          <button id="install-app-btn" class="hidden text-[10px] uppercase bg-[#8B5E3C] text-white px-3 py-1.5 rounded-full font-bold shadow-md active:scale-95 transition-all tracking-wider whitespace-nowrap">Install</button>
+          <button id="install-app-btn" class="opacity-0 text-[10px] uppercase bg-[#8B5E3C] text-white px-3 py-1.5 rounded-full font-bold shadow-md active:scale-95 transition-all tracking-wider whitespace-nowrap">Install</button>
           <div>
               <div id="date-gregorian" class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest leading-none block mb-1">--</div>
               <div id="date-hijri" class="text-[10px] text-on-surface-variant/70 uppercase tracking-tighter block">--</div>
@@ -139,7 +139,7 @@
       </section>
 
       <!-- Admin View (Dashboard) -->
-      <section id="admin-view" class="view-section hidden opacity-0 transition-all duration-300">
+      <section id="admin-view" class="view-section transition-all duration-300">
           <div id="admin-auth-panel" class="py-10 text-center">
               <div class="w-20 h-20 bg-secondary-container text-on-secondary-container rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                   <span class="material-symbols-outlined text-4xl">lock</span>
@@ -186,8 +186,10 @@
   </nav>
 
   <style>
-      .view-section.active { display: block; opacity: 1; }
-      .nav-item.active { color: #2c1a0e; }
+      .view-section { display: none; opacity: 0; pointer-events: none; }
+      .view-section.active { display: block; opacity: 1; pointer-events: auto; }
+      .nav-item.active { color: #2c1a0e; pointer-events: none; }
+      .nav-item.active .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
   </style>
 
   <!-- Login Modal -->
