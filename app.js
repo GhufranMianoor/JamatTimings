@@ -202,10 +202,10 @@ function renderMasjids(filterQuery = '') {
       <div class="p-6">
           <div class="flex justify-between items-start mb-6">
               <div>
-                  <h2 class="text-xl font-display font-extrabold text-primary-container mb-1">${m.name_urdu || m.name}</h2>
+                  <h2 class="text-xl font-display font-extrabold text-primary-container mb-1">${m.name || m.name_urdu}</h2>
                   <div class="flex gap-2 items-center">
                     <span class="inline-block px-3 py-1 rounded-full bg-surface-container text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">${m.area}</span>
-                    ${m.name_urdu ? `<span class="text-xs opacity-40 font-medium">${m.name}</span>` : ''}
+                    ${m.name_urdu ? `<span class="text-xs font-urdu text-secondary/60 ml-2">${m.name_urdu}</span>` : ''}
                   </div>
               </div>
               <button class="p-2 rounded-xl hover:bg-surface-container transition-colors text-outline">
