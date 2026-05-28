@@ -1,0 +1,5 @@
+package pk.jamattimings.jamat_timings
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
