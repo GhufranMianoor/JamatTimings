@@ -1,6 +1,6 @@
 {
-    "name": "Jamat Timings",
-    "short_name": "Jamat Timings",
+    "name": "jamat_timings",
+    "short_name": "jamat_timings",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
