@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 import 'package:jamat_timings/data/models/masjid.dart';
 
@@ -33,7 +32,12 @@ class _MasjidManagementScreenState extends State<MasjidManagementScreen> {
         actions: [
           TextButton(child: const Text('Cancel'), onPressed: () => Navigator.pop(context)),
           TextButton(
-            child: Text(isSuspended ? 'Activate' : 'Suspend', style: TextStyle(color: isSuspended ? Colors.green : Colors.orange)),
+            child: Text(
+              isSuspended ? 'Activate' : 'Suspend',
+              style: TextStyle(
+                color: isSuspended ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+              ),
+            ),
             onPressed: () {
               setState(() {
                 final index = _masjids.indexWhere((m) => m.id == masjid.id);
@@ -60,9 +64,12 @@ class _MasjidManagementScreenState extends State<MasjidManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Masjid Listings', style: TextStyle(fontFamily: 'Amiri')),
+        title: Text('Masjid Listings', style: theme.textTheme.titleLarge),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -73,8 +80,8 @@ class _MasjidManagementScreenState extends State<MasjidManagementScreen> {
 
           return Card(
             child: ListTile(
-              leading: Icon(Icons.mosque, color: isSuspended ? Colors.grey : AppTheme.primaryGreen),
-              title: Text(masjid.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+              leading: Icon(Icons.mosque, color: isSuspended ? colorScheme.onSurfaceVariant : colorScheme.primary),
+              title: Text(masjid.name, style: theme.textTheme.titleMedium),
               subtitle: Text('${masjid.area ?? "Main"}, ${masjid.city}'),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -82,7 +89,7 @@ class _MasjidManagementScreenState extends State<MasjidManagementScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: isSuspended ? Colors.orange.shade100 : Colors.green.shade100,
+                      color: isSuspended ? colorScheme.secondary.withValues(alpha: 0.25) : colorScheme.primary.withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -90,7 +97,7 @@ class _MasjidManagementScreenState extends State<MasjidManagementScreen> {
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: isSuspended ? Colors.orange.shade800 : Colors.green.shade800,
+                        color: isSuspended ? colorScheme.onSecondary : colorScheme.onPrimary,
                       ),
                     ),
                   ),
@@ -98,7 +105,7 @@ class _MasjidManagementScreenState extends State<MasjidManagementScreen> {
                   IconButton(
                     icon: Icon(
                       isSuspended ? Icons.play_arrow : Icons.pause,
-                      color: isSuspended ? Colors.green : Colors.orange,
+                      color: isSuspended ? colorScheme.primary : colorScheme.secondary,
                     ),
                     onPressed: () => _toggleSuspension(masjid),
                   ),

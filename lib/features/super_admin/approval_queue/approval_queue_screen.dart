@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 import 'package:jamat_timings/data/models/masjid_request.dart';
 
@@ -29,7 +28,7 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen> {
         actions: [
           TextButton(child: const Text('Cancel'), onPressed: () => Navigator.pop(context)),
           TextButton(
-            child: const Text('Approve', style: TextStyle(color: Colors.green)),
+            child: Text('Approve', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
             onPressed: () {
               setState(() {
                 _requests.removeWhere((r) => r.id == request.id);
@@ -65,7 +64,7 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen> {
         actions: [
           TextButton(child: const Text('Cancel'), onPressed: () => Navigator.pop(context)),
           TextButton(
-            child: const Text('Reject', style: TextStyle(color: Colors.red)),
+            child: Text('Reject', style: TextStyle(color: Theme.of(context).colorScheme.error)),
             onPressed: () {
               setState(() {
                 _requests.removeWhere((r) => r.id == request.id);
@@ -83,9 +82,12 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Approval Queue', style: TextStyle(fontFamily: 'Amiri')),
+        title: Text('Approval Queue', style: theme.textTheme.titleLarge),
         actions: [
           // Quick logout back to guest
           IconButton(
@@ -95,15 +97,15 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen> {
         ],
       ),
       body: _requests.isEmpty
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.done_all, size: 64, color: Colors.green),
-                  SizedBox(height: 16),
-                  Text('All Caught Up!', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.primaryGreen)),
-                  SizedBox(height: 8),
-                  Text('No pending masjid registration requests.', style: TextStyle(color: Colors.grey)),
+                  Icon(Icons.done_all, size: 64, color: colorScheme.primary),
+                  const SizedBox(height: 16),
+                  Text('All Caught Up!', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorScheme.primary)),
+                  const SizedBox(height: 8),
+                  Text('No pending masjid registration requests.', style: TextStyle(color: colorScheme.onSurfaceVariant)),
                 ],
               ),
             )
@@ -114,8 +116,8 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen> {
                 final request = _requests[index];
                 return Card(
                   child: ExpansionTile(
-                    leading: const Icon(Icons.rate_review, color: AppTheme.primaryGreen),
-                    title: Text(request.masjidName, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    leading: Icon(Icons.rate_review, color: colorScheme.primary),
+                    title: Text(request.masjidName, style: theme.textTheme.titleMedium),
                     subtitle: Text('${request.city} • Submitter: ${request.adminEmail}'),
                     children: [
                       Padding(
@@ -133,15 +135,15 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 OutlinedButton.icon(
-                                  icon: const Icon(Icons.clear, color: Colors.red),
-                                  label: const Text('Reject', style: TextStyle(color: Colors.red)),
+                                  icon: Icon(Icons.clear, color: colorScheme.error),
+                                  label: Text('Reject', style: TextStyle(color: colorScheme.error)),
                                   onPressed: () => _handleRejection(request),
                                 ),
                                 const SizedBox(width: 12),
                                 ElevatedButton.icon(
-                                  icon: const Icon(Icons.check, color: Colors.white),
+                                  icon: Icon(Icons.check, color: colorScheme.onPrimary),
                                   label: const Text('Approve'),
-                                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryGreen),
+                                  style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary),
                                   onPressed: () => _handleApproval(request),
                                 ),
                               ],
@@ -162,7 +164,7 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen> {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: RichText(
         text: TextSpan(
-          style: const TextStyle(color: Colors.black87, fontSize: 13),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 13),
           children: [
             TextSpan(text: '$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
             TextSpan(text: value),

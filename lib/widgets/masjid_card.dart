@@ -25,6 +25,9 @@ class MasjidCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final surfaceVariant = colorScheme.surfaceContainerHighest;
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.only(bottom: 16),
@@ -40,7 +43,7 @@ class MasjidCard extends StatelessWidget {
                 width: 4,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryGreen,
+                  color: colorScheme.primary,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -56,10 +59,7 @@ class MasjidCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             masjid.name,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                              style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -68,7 +68,7 @@ class MasjidCard extends StatelessWidget {
                           const SizedBox(width: 4),
                           const Tooltip(
                             message: 'Cached offline data',
-                            child: Icon(Icons.cloud_off_outlined, size: 14, color: Colors.grey),
+                            child: Icon(Icons.cloud_off_outlined, size: 14),
                           ),
                         ],
                       ],
@@ -76,10 +76,7 @@ class MasjidCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       masjid.area != null ? '${masjid.area}, ${masjid.city}' : masjid.city,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade600,
-                      ),
+                      style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -104,9 +101,8 @@ class MasjidCard extends StatelessWidget {
                             const SizedBox(width: 6),
                             Text(
                               'Next: ${nextPrayerName!.toUpperCase()} at $nextPrayerTime',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                              style: textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
                                 color: AppTheme.getPrayerColor(nextPrayerName!),
                               ),
                             ),
@@ -116,7 +112,7 @@ class MasjidCard extends StatelessWidget {
                     else
                       const Text(
                         'No timings scheduled today',
-                        style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
                       ),
                   ],
                 ),
@@ -130,7 +126,7 @@ class MasjidCard extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       isFavourite ? Icons.star : Icons.star_border,
-                      color: isFavourite ? AppTheme.accentGold : Colors.grey,
+                      color: isFavourite ? colorScheme.secondary : colorScheme.outline,
                     ),
                     onPressed: onFavouriteToggle,
                     padding: EdgeInsets.zero,
@@ -141,15 +137,14 @@ class MasjidCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: surfaceVariant.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         DistanceUtils.formatDistance(masjid.distanceKm!),
-                        style: TextStyle(
-                          fontSize: 11,
+                        style: textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade800,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ),

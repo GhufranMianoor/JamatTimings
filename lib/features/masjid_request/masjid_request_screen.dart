@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jamat_timings/app/theme.dart';
+import 'package:jamat_timings/widgets/islamic_pattern_bg.dart';
 
 class MasjidRequestScreen extends StatefulWidget {
   const MasjidRequestScreen({super.key});
@@ -47,167 +47,173 @@ class _MasjidRequestScreenState extends State<MasjidRequestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register New Masjid', style: TextStyle(fontFamily: 'Amiri')),
+        title: Text('Register New Masjid', style: theme.textTheme.titleLarge),
       ),
-      body: Form(
-        key: _formKey,
-        child: Stepper(
-          type: StepperType.vertical,
-          currentStep: _currentStep,
-          onStepTapped: (step) => setState(() => _currentStep = step),
-          onStepContinue: () {
-            if (_currentStep < 3) {
-              setState(() => _currentStep += 1);
-            } else {
-              _submitRequest();
-            }
-          },
-          onStepCancel: () {
-            if (_currentStep > 0) {
-              setState(() => _currentStep -= 1);
-            }
-          },
-          controlsBuilder: (context, details) {
-            final isLast = _currentStep == 3;
-            return Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: details.onStepContinue,
-                    child: Text(isLast ? 'SUBMIT REQUEST' : 'CONTINUE'),
-                  ),
-                  if (_currentStep > 0) ...[
-                    const SizedBox(width: 12),
-                    TextButton(
-                      onPressed: details.onStepCancel,
-                      child: const Text('BACK'),
+      body: IslamicPatternBackground(
+        opacity: 0.03,
+        child: Form(
+          key: _formKey,
+          child: Stepper(
+            type: StepperType.vertical,
+            currentStep: _currentStep,
+            onStepTapped: (step) => setState(() => _currentStep = step),
+            onStepContinue: () {
+              if (_currentStep < 3) {
+                setState(() => _currentStep += 1);
+              } else {
+                _submitRequest();
+              }
+            },
+            onStepCancel: () {
+              if (_currentStep > 0) {
+                setState(() => _currentStep -= 1);
+              }
+            },
+            controlsBuilder: (context, details) {
+              final isLast = _currentStep == 3;
+              return Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: details.onStepContinue,
+                      child: Text(isLast ? 'SUBMIT REQUEST' : 'CONTINUE'),
                     ),
-                  ],
-                ],
-              ),
-            );
-          },
-          steps: [
-            // Step 1: Basic Info
-            Step(
-              title: const Text('Basic Information', style: TextStyle(fontWeight: FontWeight.bold)),
-              isActive: _currentStep >= 0,
-              state: _currentStep > 0 ? StepState.complete : StepState.editing,
-              content: Column(
-                children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Masjid Name *'),
-                    validator: (v) => v!.isEmpty ? 'Name is required' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _addressController,
-                    decoration: const InputDecoration(labelText: 'Street Address *'),
-                    validator: (v) => v!.isEmpty ? 'Address is required' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _cityController,
-                          decoration: const InputDecoration(labelText: 'City *'),
-                          validator: (v) => v!.isEmpty ? 'City is required' : null,
-                        ),
-                      ),
+                    if (_currentStep > 0) ...[
                       const SizedBox(width: 12),
-                      Expanded(
-                        child: TextFormField(
-                          controller: _areaController,
-                          decoration: const InputDecoration(labelText: 'Area / Sector'),
-                        ),
+                      TextButton(
+                        onPressed: details.onStepCancel,
+                        child: const Text('BACK'),
                       ),
                     ],
-                  ),
-                ],
+                  ],
+                ),
+              );
+            },
+            steps: [
+              // Step 1: Basic Info
+              Step(
+                title: const Text('Basic Information', style: TextStyle(fontWeight: FontWeight.bold)),
+                isActive: _currentStep >= 0,
+                state: _currentStep > 0 ? StepState.complete : StepState.editing,
+                content: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(labelText: 'Masjid Name *'),
+                      validator: (v) => v!.isEmpty ? 'Name is required' : null,
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _addressController,
+                      decoration: const InputDecoration(labelText: 'Street Address *'),
+                      validator: (v) => v!.isEmpty ? 'Address is required' : null,
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _cityController,
+                            decoration: const InputDecoration(labelText: 'City *'),
+                            validator: (v) => v!.isEmpty ? 'City is required' : null,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _areaController,
+                            decoration: const InputDecoration(labelText: 'Area / Sector'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            
-            // Step 2: Coordinates and Location Picker
-            Step(
-              title: const Text('Coordinates (GPS)', style: TextStyle(fontWeight: FontWeight.bold)),
-              isActive: _currentStep >= 1,
-              state: _currentStep > 1 ? StepState.complete : StepState.editing,
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Precision geographic coordinates are required to calculate proximity distance maps for guest users.',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    height: 120,
-                    width: double.infinity,
-                    color: Colors.blueGrey.shade50,
-                    child: const Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.gps_fixed, color: AppTheme.primaryGreen),
-                          SizedBox(width: 8),
-                          Text('Auto-Detect Location (31.5204, 74.3587)', style: TextStyle(fontWeight: FontWeight.w600)),
-                        ],
+
+              // Step 2: Coordinates and Location Picker
+              Step(
+                title: const Text('Coordinates (GPS)', style: TextStyle(fontWeight: FontWeight.bold)),
+                isActive: _currentStep >= 1,
+                state: _currentStep > 1 ? StepState.complete : StepState.editing,
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Precision geographic coordinates are required to calculate proximity distance maps for guest users.',
+                      style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.7)),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      height: 120,
+                      width: double.infinity,
+                      color: colorScheme.surface,
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.gps_fixed, color: colorScheme.primary),
+                            const SizedBox(width: 8),
+                            const Text('Auto-Detect Location (31.5204, 74.3587)', style: TextStyle(fontWeight: FontWeight.w600)),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            
-            // Step 3: Secondary Masjid details
-            Step(
-              title: const Text('Clerical & Contact', style: TextStyle(fontWeight: FontWeight.bold)),
-              isActive: _currentStep >= 2,
-              state: _currentStep > 2 ? StepState.complete : StepState.editing,
-              content: Column(
-                children: [
-                  TextFormField(
-                    controller: _imamController,
-                    decoration: const InputDecoration(labelText: 'Imam / Prayer Lead Name'),
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _contactController,
-                    decoration: const InputDecoration(labelText: 'Office Contact Phone'),
-                    keyboardType: TextInputType.phone,
-                  ),
-                ],
+
+              // Step 3: Secondary Masjid details
+              Step(
+                title: const Text('Clerical & Contact', style: TextStyle(fontWeight: FontWeight.bold)),
+                isActive: _currentStep >= 2,
+                state: _currentStep > 2 ? StepState.complete : StepState.editing,
+                content: Column(
+                  children: [
+                    TextFormField(
+                      controller: _imamController,
+                      decoration: const InputDecoration(labelText: 'Imam / Prayer Lead Name'),
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _contactController,
+                      decoration: const InputDecoration(labelText: 'Office Contact Phone'),
+                      keyboardType: TextInputType.phone,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            
-            // Step 4: Admin Verification Info
-            Step(
-              title: const Text('Admin Coordinator verification', style: TextStyle(fontWeight: FontWeight.bold)),
-              isActive: _currentStep >= 3,
-              state: _currentStep == 3 ? StepState.editing : StepState.indexed,
-              content: Column(
-                children: [
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Admin Assignee Email *'),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (v) => v!.isEmpty || !v.contains('@') ? 'Enter a valid admin email' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _noteController,
-                    decoration: const InputDecoration(labelText: 'Coordinator Supporting Notes'),
-                    maxLines: 3,
-                  ),
-                ],
+
+              // Step 4: Admin Verification Info
+              Step(
+                title: const Text('Admin Coordinator verification', style: TextStyle(fontWeight: FontWeight.bold)),
+                isActive: _currentStep >= 3,
+                state: _currentStep == 3 ? StepState.editing : StepState.indexed,
+                content: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(labelText: 'Admin Assignee Email *'),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (v) => v!.isEmpty || !v.contains('@') ? 'Enter a valid admin email' : null,
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _noteController,
+                      decoration: const InputDecoration(labelText: 'Coordinator Supporting Notes'),
+                      maxLines: 3,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

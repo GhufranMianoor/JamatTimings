@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 
 class AdminManagementScreen extends StatelessWidget {
@@ -7,11 +6,13 @@ class AdminManagementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final admins = MockData.admins;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Administrator Management', style: TextStyle(fontFamily: 'Amiri')),
+        title: Text('Administrator Management', style: theme.textTheme.titleLarge),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -24,15 +25,15 @@ class AdminManagementScreen extends StatelessWidget {
             child: ListTile(
               leading: Icon(
                 isSuper ? Icons.supervised_user_circle : Icons.person,
-                color: isSuper ? Colors.blue : AppTheme.primaryGreen,
+                color: isSuper ? colorScheme.secondary : colorScheme.primary,
                 size: 32,
               ),
-              title: Text(admin.fullName ?? 'Unnamed Admin', style: const TextStyle(fontWeight: FontWeight.bold)),
+              title: Text(admin.fullName ?? 'Unnamed Admin', style: theme.textTheme.titleMedium),
               subtitle: Text(admin.email),
               trailing: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: isSuper ? Colors.blue.shade100 : Colors.green.shade100,
+                  color: isSuper ? colorScheme.secondary.withValues(alpha: 0.22) : colorScheme.primary.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -40,7 +41,7 @@ class AdminManagementScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 9,
                     fontWeight: FontWeight.bold,
-                    color: isSuper ? Colors.blue.shade800 : Colors.green.shade800,
+                    color: isSuper ? colorScheme.onSecondary : colorScheme.onPrimary,
                   ),
                 ),
               ),

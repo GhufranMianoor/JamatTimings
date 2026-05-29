@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jamat_timings/app/theme.dart';
+import 'package:jamat_timings/widgets/islamic_pattern_bg.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -12,7 +12,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _emailController = TextEditingController();
   bool _isLoading = false;
 
-  void _sendResetLink() {
+  Future<void> _sendResetLink() async {
     if (_emailController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter your email')),
@@ -22,75 +22,84 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     setState(() => _isLoading = true);
 
-    Future.delayed(const Duration(seconds: 1), () {
-      setState(() => _isLoading = false);
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Reset Link Sent'),
-          content: Text('A password reset link has been dispatched to: ${_emailController.text}'),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context); // back to login
-              },
-            ),
-          ],
-        ),
-      );
-    });
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (!mounted) return;
+
+    setState(() => _isLoading = false);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reset Link Sent'),
+        content: Text('A password reset link has been dispatched to: ${_emailController.text}'),
+        actions: [
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context); // back to login
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recover Password', style: TextStyle(fontFamily: 'Amiri')),
+        title: Text('Recover Password', style: theme.textTheme.titleLarge),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 40),
-            Icon(Icons.lock_reset, size: 80, color: AppTheme.primaryGreen.withValues(alpha: 0.8)),
-            const SizedBox(height: 24),
-            const Text(
-              'Forgot Your Password?',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.primaryGreen),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Enter your registered administrator email. We will send you a secure link to reset your credentials.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade600, height: 1.5),
-            ),
-            const SizedBox(height: 40),
-
-            TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: 'Email Address',
-                prefixIcon: const Icon(Icons.email, color: AppTheme.primaryGreen),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      body: IslamicPatternBackground(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 40),
+              Icon(Icons.lock_reset, size: 80, color: colorScheme.primary.withValues(alpha: 0.85)),
+              const SizedBox(height: 24),
+              Text(
+                'Forgot Your Password?',
+                style: theme.textTheme.headlineMedium?.copyWith(color: colorScheme.primary),
               ),
-            ),
-            const SizedBox(height: 24),
-
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _sendResetLink,
-                child: _isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('SEND RESET LINK', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 12),
+              Text(
+                'Enter your registered administrator email. We will send you a secure link to reset your credentials.',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurface.withValues(alpha: 0.7),
+                  height: 1.5,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 40),
+
+              TextField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Email Address',
+                  prefixIcon: Icon(Icons.email, color: colorScheme.primary),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _sendResetLink,
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text('SEND RESET LINK', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

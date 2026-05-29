@@ -15,12 +15,32 @@ class IslamicPatternBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _IslamicPatternPainter(
-        color: color ?? Theme.of(context).primaryColor,
-        opacity: opacity,
-      ),
-      child: child,
+    final theme = Theme.of(context);
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                theme.colorScheme.surface,
+                theme.colorScheme.surface,
+                theme.colorScheme.secondary.withValues(alpha: 0.12),
+              ],
+            ),
+          ),
+        ),
+        CustomPaint(
+          painter: _IslamicPatternPainter(
+            color: color ?? theme.colorScheme.primary,
+            opacity: opacity,
+          ),
+        ),
+        if (child != null) child!,
+      ],
     );
   }
 }

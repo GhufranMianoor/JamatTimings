@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jamat_timings/app/theme.dart';
 
 class SuperAdminShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -27,22 +26,22 @@ class SuperAdminShell extends StatelessWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.rate_review_outlined),
-            selectedIcon: Icon(Icons.rate_review, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.rate_review),
             label: 'Review Queue',
           ),
           NavigationDestination(
             icon: Icon(Icons.mosque_outlined),
-            selectedIcon: Icon(Icons.mosque, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.mosque),
             label: 'Masjids',
           ),
           NavigationDestination(
             icon: Icon(Icons.people_outline),
-            selectedIcon: Icon(Icons.people, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.people),
             label: 'Admins',
           ),
           NavigationDestination(
             icon: Icon(Icons.history_outlined),
-            selectedIcon: Icon(Icons.history, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.history),
             label: 'Audit Logs',
           ),
         ],

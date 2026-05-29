@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 import 'package:jamat_timings/widgets/islamic_pattern_bg.dart';
 import 'package:jamat_timings/widgets/masjid_card.dart';
@@ -34,16 +33,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final isOnline = ref.watch(isOnlineProvider);
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     // Badshahi Masjid as default nearest for the hero card
-    final BadshahiMasjid = MockData.masjids[0];
+    final badshahiMasjid = MockData.masjids[0];
     final targetTime = DateTime.now().add(const Duration(hours: 1, minutes: 23));
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Jamat Timings',
-          style: TextStyle(fontFamily: 'Amiri', fontWeight: FontWeight.bold, fontSize: 24),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontSize: 24,
+            letterSpacing: 0.3,
+          ),
         ),
         actions: [
           IconButton(
@@ -68,7 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     // Top Hero Jamat Countdown Card
                     Card(
                       elevation: 4,
-                      color: AppTheme.primaryGreen,
+                      color: colorScheme.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -85,19 +88,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        BadshahiMasjid.name,
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                        badshahiMasjid.name,
+                                        style: theme.textTheme.headlineMedium?.copyWith(
+                                          color: colorScheme.onPrimary,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Nearest Masjid • ${BadshahiMasjid.area}',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.white.withValues(alpha: 0.8),
+                                        'Nearest Masjid • ${badshahiMasjid.area}',
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: colorScheme.onPrimary.withValues(alpha: 0.82),
                                         ),
                                       ),
                                     ],
@@ -106,18 +106,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.2),
+                                    color: colorScheme.onPrimary.withValues(alpha: 0.1),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.mosque,
-                                    color: AppTheme.accentGold,
+                                    color: Colors.white,
                                     size: 28,
                                   ),
                                 ),
                               ],
                             ),
-                            const Divider(color: Colors.white24, height: 24),
+                            Divider(color: colorScheme.onPrimary.withValues(alpha: 0.14), height: 24),
                             
                             // Countdown timer
                             CountdownTimer(
@@ -128,9 +128,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const SizedBox(height: 8),
                             Text(
                               'Isha Jamat time: 20:45',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.white.withValues(alpha: 0.9),
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.onPrimary.withValues(alpha: 0.9),
                               ),
                             ),
                           ],
@@ -147,12 +146,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           'Approved Masjids Nearby',
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryGreen,
+                            color: colorScheme.primary,
                           ),
                         ),
                         Text(
                           '${MockData.masjids.length} found',
-                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                          style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
                         ),
                       ],
                     ),
@@ -183,8 +182,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/map'),
-        backgroundColor: AppTheme.primaryGreen,
-        foregroundColor: Colors.white,
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
         icon: const Icon(Icons.map),
         label: const Text('Map View'),
       ),

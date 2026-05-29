@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 import 'package:jamat_timings/widgets/masjid_card.dart';
 
@@ -8,15 +7,14 @@ class FavouritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     // Badshahi Masjid as mock favourite
     final favouriteMasjids = [MockData.masjids[0]];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Favourite Masjids',
-          style: TextStyle(fontFamily: 'Amiri', fontWeight: FontWeight.bold),
-        ),
+        title: Text('Favourite Masjids', style: theme.textTheme.titleLarge),
       ),
       body: favouriteMasjids.isEmpty
           ? _buildEmptyState(context)
@@ -38,23 +36,26 @@ class FavouritesScreen extends StatelessWidget {
   }
 
   Widget _buildEmptyState(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.star_border, size: 80, color: AppTheme.primaryGreen.withValues(alpha: 0.3)),
+            Icon(Icons.star_border, size: 80, color: colorScheme.primary.withValues(alpha: 0.35)),
             const SizedBox(height: 24),
-            const Text(
+            Text(
               'No Favourites Yet',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.primaryGreen),
+              style: theme.textTheme.headlineMedium?.copyWith(color: colorScheme.primary),
             ),
             const SizedBox(height: 12),
-            const Text(
+            Text(
               'Star your favorite masjids to save them here for offline access and quick reference.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.5),
+              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.7), height: 1.5),
             ),
           ],
         ),

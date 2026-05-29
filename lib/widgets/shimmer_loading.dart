@@ -6,6 +6,7 @@ class ShimmerMasjidList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ListView.builder(
       itemCount: 5,
       padding: const EdgeInsets.all(16),
@@ -14,8 +15,8 @@ class ShimmerMasjidList extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 16),
           height: 120,
           child: Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.85),
+            highlightColor: colorScheme.surface.withValues(alpha: 0.95),
             child: Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               child: Padding(
@@ -25,7 +26,7 @@ class ShimmerMasjidList extends StatelessWidget {
                     Container(
                       width: 4,
                       height: double.infinity,
-                      color: Colors.white,
+                      color: colorScheme.onSurface.withValues(alpha: 0.05),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -33,11 +34,23 @@ class ShimmerMasjidList extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(width: 150, height: 16, color: Colors.white),
+                          Container(
+                            width: 150,
+                            height: 16,
+                            color: colorScheme.onSurface.withValues(alpha: 0.08),
+                          ),
                           const SizedBox(width: 8, height: 8),
-                          Container(width: 100, height: 12, color: Colors.white),
+                          Container(
+                            width: 100,
+                            height: 12,
+                            color: colorScheme.onSurface.withValues(alpha: 0.06),
+                          ),
                           const SizedBox(width: 8, height: 8),
-                          Container(width: 200, height: 12, color: Colors.white),
+                          Container(
+                            width: 200,
+                            height: 12,
+                            color: colorScheme.onSurface.withValues(alpha: 0.06),
+                          ),
                         ],
                       ),
                     ),

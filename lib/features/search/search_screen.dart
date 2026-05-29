@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 import 'package:jamat_timings/data/models/masjid.dart';
 import 'package:jamat_timings/widgets/masjid_card.dart';
@@ -48,12 +47,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Search Masjids',
-          style: TextStyle(fontFamily: 'Amiri', fontWeight: FontWeight.bold),
-        ),
+        title: Text('Search Masjids', style: theme.textTheme.titleLarge),
       ),
       body: Column(
         children: [
@@ -65,7 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
                 hintText: 'Search by masjid name, area, or city...',
-                prefixIcon: const Icon(Icons.search, color: AppTheme.primaryGreen),
+                prefixIcon: Icon(Icons.search, color: colorScheme.primary),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
                         icon: const Icon(Icons.clear),
@@ -76,10 +75,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       )
                     : null,
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: colorScheme.surface,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                  borderSide: BorderSide(color: colorScheme.outline.withValues(alpha: 0.35)),
                 ),
                 contentPadding: const EdgeInsets.symmetric(vertical: 14),
               ),
@@ -104,9 +103,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       });
                       _onSearchChanged(_searchController.text);
                     },
-                    selectedColor: AppTheme.primaryGreen.withValues(alpha: 0.2),
-                    checkmarkColor: AppTheme.primaryGreen,
-                    backgroundColor: Colors.white,
+                    selectedColor: colorScheme.primary.withValues(alpha: 0.18),
+                    checkmarkColor: colorScheme.primary,
+                    backgroundColor: colorScheme.surface,
                   ),
                 );
               }).toList(),
@@ -117,7 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
           // Search Results List
           Expanded(
             child: _searchResults.isEmpty
-                ? _buildEmptyState()
+                ? _buildEmptyState(context)
                 : ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: _searchResults.length,
@@ -138,21 +137,23 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.search_off, size: 64, color: Colors.grey.shade400),
+          Icon(Icons.search_off, size: 64, color: colorScheme.onSurfaceVariant),
           const SizedBox(height: 16),
           Text(
             'No masjids found',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade600),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: colorScheme.primary),
           ),
           const SizedBox(height: 8),
           Text(
             'Try typing a different name or neighborhood.',
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+            style: TextStyle(fontSize: 13, color: colorScheme.onSurface.withValues(alpha: 0.7)),
           ),
         ],
       ),

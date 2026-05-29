@@ -16,6 +16,8 @@ class PrayerTimeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     final prayerColor = AppTheme.getPrayerColor(prayerName);
     final displayName = AppConstants.prayerDisplayNames[prayerName.toLowerCase()] ?? prayerName;
     final icon = AppConstants.prayerIcons[prayerName.toLowerCase()] ?? Icons.access_time;
@@ -49,10 +51,9 @@ class PrayerTimeTile extends StatelessWidget {
                 children: [
                   Text(
                     displayName,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: isNext ? prayerColor : null,
+                    style: textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: isNext ? prayerColor : colorScheme.onSurface,
                     ),
                   ),
                   if (isNext)
@@ -63,12 +64,11 @@ class PrayerTimeTile extends StatelessWidget {
                         color: prayerColor,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: const Text(
+                      child: Text(
                         'UPCOMING',
-                        style: TextStyle(
-                          fontSize: 9,
+                        style: textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: colorScheme.onPrimary,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -86,10 +86,9 @@ class PrayerTimeTile extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 2),
                         child: Text(
                           time,
-                          style: TextStyle(
-                            fontSize: 18,
+                          style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: isNext ? prayerColor : null,
+                            color: isNext ? prayerColor : colorScheme.onSurface,
                           ),
                         ),
                       );
@@ -97,11 +96,7 @@ class PrayerTimeTile extends StatelessWidget {
                   : [
                       const Text(
                         '--:--',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey,
-                        ),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                       ),
                     ],
             ),

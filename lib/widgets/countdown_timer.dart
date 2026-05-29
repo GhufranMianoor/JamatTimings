@@ -25,6 +25,9 @@ class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProvid
     super.initState();
     _timeRemaining = widget.targetTime.difference(DateTime.now());
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _timeRemaining = widget.targetTime.difference(DateTime.now());
       });
@@ -45,13 +48,14 @@ class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     if (_timeRemaining.isNegative) {
-      return const Text(
+      return Text(
         'Jamat is in progress',
-        style: TextStyle(
-          fontSize: 16,
+        style: textTheme.titleSmall?.copyWith(
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: colorScheme.onSurface,
         ),
       );
     }
@@ -70,10 +74,9 @@ class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProvid
     Widget textWidget = Text(
       'Next Jamat (${widget.prayerName.toUpperCase()}) in: '
       '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-      style: TextStyle(
-        fontSize: 15,
+      style: textTheme.bodyMedium?.copyWith(
         fontWeight: FontWeight.w600,
-        color: isUrgent ? Colors.redAccent.shade100 : Colors.white,
+        color: isUrgent ? colorScheme.error : colorScheme.onSurface,
       ),
     );
 

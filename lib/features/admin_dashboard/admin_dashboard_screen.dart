@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
@@ -9,11 +8,13 @@ class AdminDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Badshahi Masjid as assigned masjid
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final assignedMasjid = MockData.masjids[0];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Dashboard', style: TextStyle(fontFamily: 'Amiri')),
+        title: Text('Admin Dashboard', style: theme.textTheme.titleLarge),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -26,7 +27,7 @@ class AdminDashboardScreen extends StatelessWidget {
                   actions: [
                     TextButton(child: const Text('Cancel'), onPressed: () => Navigator.pop(context)),
                     TextButton(
-                      child: const Text('Log Out', style: TextStyle(color: Colors.red)),
+                      child: Text('Log Out', style: TextStyle(color: Theme.of(context).colorScheme.error)),
                       onPressed: () {
                         Navigator.pop(context); // close dialog
                         context.go('/home');
@@ -44,9 +45,9 @@ class AdminDashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'My Assigned Masjids',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.primaryGreen),
+              style: theme.textTheme.titleMedium?.copyWith(color: colorScheme.primary),
             ),
             const SizedBox(height: 12),
             
@@ -62,17 +63,17 @@ class AdminDashboardScreen extends StatelessWidget {
                       children: [
                         Text(
                           assignedMasjid.name,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: theme.textTheme.titleMedium,
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.green.shade100,
+                            color: colorScheme.secondary.withValues(alpha: 0.35),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
                             'Active'.toUpperCase(),
-                            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.green.shade800),
+                            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: colorScheme.onSecondary),
                           ),
                         ),
                       ],
@@ -80,16 +81,16 @@ class AdminDashboardScreen extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       assignedMasjid.address,
-                      style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                      style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.7)),
                     ),
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        const Icon(Icons.check_circle_outline, color: Colors.green, size: 16),
+                        Icon(Icons.check_circle_outline, color: colorScheme.primary, size: 16),
                         const SizedBox(width: 6),
                         Text(
                           'Timings are up to date',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.green.shade700),
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: colorScheme.primary),
                         ),
                       ],
                     ),
@@ -112,12 +113,12 @@ class AdminDashboardScreen extends StatelessWidget {
             const Spacer(),
             
             Card(
-              color: AppTheme.primaryGreen.withValues(alpha: 0.05),
+              color: colorScheme.primary.withValues(alpha: 0.08),
               child: ListTile(
-                leading: const Icon(Icons.add_business, color: AppTheme.primaryGreen),
+                leading: Icon(Icons.add_business, color: colorScheme.primary),
                 title: const Text('Register Another Masjid', style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: const Text('Submit a request to onboard a new masjid to this platform.'),
-                trailing: const Icon(Icons.chevron_right, color: AppTheme.primaryGreen),
+                subtitle: Text('Submit a request to onboard a new masjid to this platform.', style: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.7))),
+                trailing: Icon(Icons.chevron_right, color: colorScheme.primary),
                 onTap: () => context.push('/admin/request'),
               ),
             ),

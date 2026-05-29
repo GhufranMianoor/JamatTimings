@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jamat_timings/app/theme.dart';
 
 class GuestShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -27,22 +26,22 @@ class GuestShell extends StatelessWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.mosque_outlined),
-            selectedIcon: Icon(Icons.mosque, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.mosque),
             label: 'Home',
           ),
           NavigationDestination(
             icon: Icon(Icons.map_outlined),
-            selectedIcon: Icon(Icons.map, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.map),
             label: 'Map',
           ),
           NavigationDestination(
             icon: Icon(Icons.search),
-            selectedIcon: Icon(Icons.search, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.search),
             label: 'Search',
           ),
           NavigationDestination(
             icon: Icon(Icons.star_border),
-            selectedIcon: Icon(Icons.star, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.star),
             label: 'Favourites',
           ),
         ],

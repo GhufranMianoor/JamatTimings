@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 import 'package:jamat_timings/widgets/islamic_pattern_bg.dart';
 import 'package:jamat_timings/widgets/prayer_time_tile.dart';
@@ -52,6 +51,9 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     // Find masjid in mock data
     final masjid = MockData.masjids.firstWhere(
       (m) => m.id == widget.masjidId,
@@ -75,25 +77,22 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 masjid.name,
-                style: const TextStyle(
-                  fontFamily: 'Amiri',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(offset: Offset(1, 1), blurRadius: 4.0, color: Colors.black54),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: colorScheme.onPrimary,
+                  shadows: const [
+                    Shadow(offset: Offset(1, 1), blurRadius: 4.0, color: Colors.black45),
                   ],
                 ),
               ),
               background: Container(
-                color: AppTheme.primaryGreen,
-                child: const IslamicPatternBackground(
+                color: colorScheme.primary,
+                child: IslamicPatternBackground(
                   opacity: 0.1,
                   child: Center(
                     child: Icon(
                       Icons.mosque,
                       size: 64,
-                      color: AppTheme.accentGold,
+                      color: colorScheme.secondary,
                     ),
                   ),
                 ),
@@ -131,7 +130,7 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.location_on, color: AppTheme.primaryGreen, size: 20),
+                        Icon(Icons.location_on, color: colorScheme.primary, size: 20),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Column(
@@ -139,12 +138,12 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
                             children: [
                               Text(
                                 masjid.address,
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                style: theme.textTheme.bodyLarge?.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
                               ),
                               if (masjid.area != null)
                                 Text(
                                   '${masjid.area}, ${masjid.city}',
-                                  style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                                  style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.7)),
                                 ),
                             ],
                           ),
@@ -155,23 +154,22 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
                     
                     Row(
                       children: [
-                        const Icon(Icons.sync, color: Colors.grey, size: 18),
+                        Icon(Icons.sync, color: colorScheme.onSurface.withValues(alpha: 0.55), size: 18),
                         const SizedBox(width: 8),
                         Text(
                           'Last updated: 1 day ago',
-                          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                          style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.7)),
                         ),
                       ],
                     ),
                     const Divider(height: 32),
 
                     // Standard Prayer Timings List
-                    const Text(
+                    Text(
                       'Daily Jamat Schedule',
-                      style: TextStyle(
-                        fontSize: 18,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.primaryGreen,
+                        color: colorScheme.primary,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -196,12 +194,11 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
                     const Divider(height: 32),
 
                     // Special Timings Section
-                    const Text(
+                    Text(
                       'Special Congregated Timings',
-                      style: TextStyle(
-                        fontSize: 18,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.primaryGreen,
+                        color: colorScheme.primary,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -237,10 +234,10 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
                         Expanded(
                           child: ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.primaryGreen,
+                              backgroundColor: colorScheme.primary,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
-                            icon: const Icon(Icons.directions, color: Colors.white),
+                            icon: Icon(Icons.directions, color: colorScheme.onPrimary),
                             label: const Text('Open in Google Maps'),
                             onPressed: () => _openInMaps(masjid.latitude, masjid.longitude, masjid.name),
                           ),
@@ -271,7 +268,7 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            Icon(icon, color: AppTheme.primaryGreen, size: 24),
+            Icon(icon, color: Theme.of(context).colorScheme.primary, size: 24),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -279,15 +276,23 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
                   if (timings.isNotEmpty)
-                    ...timings.map((t) => Text(t, style: const TextStyle(fontSize: 13, color: Colors.black87)))
+                    ...timings.map((t) => Text(
+                          t,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                        ))
                   else
                     Text(
                       fallback ?? 'No timings scheduled',
-                      style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.65),
+                          ),
                     ),
                 ],
               ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jamat_timings/app/theme.dart';
 import 'package:jamat_timings/core/constants.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 import 'package:jamat_timings/data/models/prayer_timing.dart';
@@ -32,7 +31,7 @@ class _TimingEditorScreenState extends State<TimingEditorScreen> with SingleTick
     super.dispose();
   }
 
-  void _addOrEditTime(String prayer, [PrayerTiming? existingTiming]) async {
+  Future<void> _addOrEditTime(String prayer, [PrayerTiming? existingTiming]) async {
     final TimeOfDay? selectedTime = await showTimePicker(
       context: context,
       initialTime: existingTiming != null
@@ -43,13 +42,12 @@ class _TimingEditorScreenState extends State<TimingEditorScreen> with SingleTick
           : const TimeOfDay(hour: 12, minute: 0),
     );
 
-    if (selectedTime == null) return;
+    if (selectedTime == null || !mounted) return;
 
     final String timeStr = '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
-    
+
     setState(() {
       if (existingTiming != null) {
-        // Edit existing timing
         final index = _timings.indexWhere((t) => t.id == existingTiming.id);
         if (index != -1) {
           _timings[index] = existingTiming.copyWith(
@@ -58,7 +56,6 @@ class _TimingEditorScreenState extends State<TimingEditorScreen> with SingleTick
           );
         }
       } else {
-        // Add new timing
         final newId = 't_new_${DateTime.now().millisecondsSinceEpoch}';
         _timings.add(
           PrayerTiming(
@@ -85,9 +82,8 @@ class _TimingEditorScreenState extends State<TimingEditorScreen> with SingleTick
   }
 
   void _saveChanges() {
-    // Write back to mock database
     MockData.timings[widget.masjidId] = _timings;
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -108,7 +104,9 @@ class _TimingEditorScreenState extends State<TimingEditorScreen> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    // Find masjid in mock data
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     final masjid = MockData.masjids.firstWhere(
       (m) => m.id == widget.masjidId,
       orElse: () => MockData.masjids[0],
@@ -116,7 +114,7 @@ class _TimingEditorScreenState extends State<TimingEditorScreen> with SingleTick
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${masjid.name} Timings', style: const TextStyle(fontFamily: 'Amiri')),
+        title: Text('${masjid.name} Timings', style: theme.textTheme.titleLarge),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
@@ -141,10 +139,10 @@ class _TimingEditorScreenState extends State<TimingEditorScreen> with SingleTick
                   children: [
                     Text(
                       'Congregation (${prayer.toUpperCase()}) Times',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.primaryGreen),
+                      style: theme.textTheme.titleMedium?.copyWith(color: colorScheme.primary),
                     ),
                     ElevatedButton.icon(
-                      icon: const Icon(Icons.add, size: 16),
+                      icon: Icon(Icons.add, size: 16, color: colorScheme.onPrimary),
                       label: const Text('Add Time'),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -156,28 +154,25 @@ class _TimingEditorScreenState extends State<TimingEditorScreen> with SingleTick
                 const SizedBox(height: 16),
                 Expanded(
                   child: prayerTimings.isEmpty
-                      ? const Center(child: Text('No congregation times configured.'))
+                      ? Center(child: Text('No congregation times configured.', style: theme.textTheme.bodyMedium))
                       : ListView.builder(
                           itemCount: prayerTimings.length,
                           itemBuilder: (context, index) {
                             final timing = prayerTimings[index];
                             return Card(
                               child: ListTile(
-                                leading: const Icon(Icons.access_time, color: AppTheme.primaryGreen),
-                                title: Text(
-                                  timing.jamatTime,
-                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
+                                leading: Icon(Icons.access_time, color: colorScheme.primary),
+                                title: Text(timing.jamatTime, style: theme.textTheme.titleMedium),
                                 subtitle: Text(timing.label ?? 'Standard Jamat'),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      icon: const Icon(Icons.edit, color: Colors.blue),
+                                      icon: Icon(Icons.edit, color: colorScheme.primary),
                                       onPressed: () => _addOrEditTime(prayer, timing),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.delete, color: Colors.red),
+                                      icon: Icon(Icons.delete, color: colorScheme.error),
                                       onPressed: () => _deleteTiming(timing.id),
                                     ),
                                   ],

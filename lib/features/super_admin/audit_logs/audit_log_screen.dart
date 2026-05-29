@@ -6,11 +6,13 @@ class AuditLogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final logs = MockData.auditLogs;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('System Audit Logs', style: TextStyle(fontFamily: 'Amiri')),
+        title: Text('System Audit Logs', style: theme.textTheme.titleLarge),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -26,10 +28,10 @@ class AuditLogScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
+                      color: colorScheme.primary.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.history, color: Colors.blue),
+                    child: Icon(Icons.history, color: colorScheme.primary),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -38,17 +40,17 @@ class AuditLogScreen extends StatelessWidget {
                       children: [
                         Text(
                           log.masjidName ?? 'Unknown Masjid',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: theme.textTheme.titleMedium,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           '${log.changedByEmail} changed ${log.prayer?.toUpperCase()} timing from ${log.oldTime} to ${log.newTime}',
-                          style: const TextStyle(fontSize: 13, color: Colors.black87),
+                          style: theme.textTheme.bodyMedium,
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Synced: ${log.changedAt.hour.toString().padLeft(2, '0')}:${log.changedAt.minute.toString().padLeft(2, '0')}',
-                          style: const TextStyle(fontSize: 11, color: Colors.grey),
+                          style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.7)),
                         ),
                       ],
                     ),

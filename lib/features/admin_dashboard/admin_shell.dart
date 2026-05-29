@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jamat_timings/app/theme.dart';
 
 class AdminShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -27,12 +26,12 @@ class AdminShell extends StatelessWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.dashboard),
             label: 'My Masjids',
           ),
           NavigationDestination(
             icon: Icon(Icons.add_circle_outline),
-            selectedIcon: Icon(Icons.add_circle, color: AppTheme.primaryGreen),
+            selectedIcon: Icon(Icons.add_circle),
             label: 'Register Masjid',
           ),
         ],
