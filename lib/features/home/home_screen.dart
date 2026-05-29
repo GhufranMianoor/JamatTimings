@@ -97,7 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         'Nearest Masjid • ${BadshahiMasjid.area}',
                                         style: TextStyle(
                                           fontSize: 13,
-                                          color: Colors.white.withOpacity(0.8),
+                                          color: Colors.white.withValues(alpha: 0.8),
                                         ),
                                       ),
                                     ],
@@ -106,7 +106,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.white.withValues(alpha: 0.2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
@@ -130,7 +130,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               'Isha Jamat time: 20:45',
                               style: TextStyle(
                                 fontSize: 13,
-                                color: Colors.white.withOpacity(0.9),
+                                color: Colors.white.withValues(alpha: 0.9),
                               ),
                             ),
                           ],
@@ -173,7 +173,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           nextPrayerTime: hasNext ? '20:45' : '19:15',
                           isOffline: !isOnline,
                         );
-                      }).toList(),
+                      }),
                   ],
                 ),
               ),

@@ -112,7 +112,7 @@ class AdminDashboardScreen extends StatelessWidget {
             const Spacer(),
             
             Card(
-              color: AppTheme.primaryGreen.withOpacity(0.05),
+              color: AppTheme.primaryGreen.withValues(alpha: 0.05),
               child: ListTile(
                 leading: const Icon(Icons.add_business, color: AppTheme.primaryGreen),
                 title: const Text('Register Another Masjid', style: TextStyle(fontWeight: FontWeight.bold)),

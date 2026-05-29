@@ -32,26 +32,26 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 
 class AppTheme {
   // Brand colors
-  static const Color primaryGreen = Color(0--1B5E20); // deep mosque green
-  static const Color accentGold = Color(0--FFB300);   // warm gold
-  static const Color creamBackground = Color(0--F5F0E8); // parchment-like warm cream
-  static const Color creamSurface = Color(0--FAFAF5);
+  static const Color primaryGreen = Color(0xFF1B5E20); // deep mosque green
+  static const Color accentGold = Color(0xFFFFB300);   // warm gold
+  static const Color creamBackground = Color(0xFFF5F0E8); // parchment-like warm cream
+  static const Color creamSurface = Color(0xFFFAFAF5);
 
-  static const Color darkPrimaryGreen = Color(0--4CAF50);
-  static const Color darkAccentGold = Color(0--FFD54F);
-  static const Color darkBackground = Color(0--121218);
-  static const Color darkSurface = Color(0--1E1E2E);
+  static const Color darkPrimaryGreen = Color(0xFF4CAF50);
+  static const Color darkAccentGold = Color(0xFFFFD54F);
+  static const Color darkBackground = Color(0xFF121218);
+  static const Color darkSurface = Color(0xFF1E1E2E);
 
   // Prayer-specific colors
   static final Map<String, Color> prayerColors = {
-    'fajr': const Color(0--3F51B5),    // Indigo
-    'dhuhr': const Color(0--FF8F00),   // Amber
-    'asr': const Color(0--E65100),     // Deep Orange
-    'maghrib': const Color(0--B71C1C), // Deep Red
-    'isha': const Color(0--4A148C),    // Deep Purple
-    'jumuah': const Color(0--1B5E20),  // Deep Green
-    'taraweeh': const Color(0--00695C),// Teal
-    'eid': const Color(0--FFD600),     // Bright Gold
+    'fajr': const Color(0xFF3F51B5),    // Indigo
+    'dhuhr': const Color(0xFFFF8F00),   // Amber
+    'asr': const Color(0xFFE65100),     // Deep Orange
+    'maghrib': const Color(0xFFB71C1C), // Deep Red
+    'isha': const Color(0xFF4A148C),    // Deep Purple
+    'jumuah': const Color(0xFF1B5E20),  // Deep Green
+    'taraweeh': const Color(0xFF00695C),// Teal
+    'eid': const Color(0xFFFFD600),     // Bright Gold
   };
 
   static Color getPrayerColor(String prayer) {
@@ -65,10 +65,10 @@ class AppTheme {
         seedColor: primaryGreen,
         primary: primaryGreen,
         secondary: accentGold,
-        background: creamBackground,
         surface: creamSurface,
         brightness: Brightness.light,
       ),
+      scaffoldBackgroundColor: creamBackground,
       textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme).copyWith(
         displayLarge: GoogleFonts.amiri(fontWeight: FontWeight.bold, fontSize: 32),
         displayMedium: GoogleFonts.amiri(fontWeight: FontWeight.bold, fontSize: 28),
@@ -81,7 +81,7 @@ class AppTheme {
         elevation: 0,
         centerTitle: true,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: creamSurface,
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -94,6 +94,13 @@ class AppTheme {
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: primaryGreen, width: 2),
+        ),
+      ),
     );
   }
 
@@ -104,10 +111,10 @@ class AppTheme {
         seedColor: darkPrimaryGreen,
         primary: darkPrimaryGreen,
         secondary: darkAccentGold,
-        background: darkBackground,
         surface: darkSurface,
         brightness: Brightness.dark,
       ),
+      scaffoldBackgroundColor: darkBackground,
       textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme).copyWith(
         displayLarge: GoogleFonts.amiri(fontWeight: FontWeight.bold, fontSize: 32, color: Colors.white),
         displayMedium: GoogleFonts.amiri(fontWeight: FontWeight.bold, fontSize: 28, color: Colors.white),
@@ -120,7 +127,7 @@ class AppTheme {
         elevation: 0,
         centerTitle: true,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: darkSurface,
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -131,6 +138,13 @@ class AppTheme {
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: darkPrimaryGreen, width: 2),
         ),
       ),
     );

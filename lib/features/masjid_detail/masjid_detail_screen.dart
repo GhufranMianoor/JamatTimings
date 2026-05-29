@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:jamat_timings/app/theme.dart';
-import 'package:jamat_timings/core/constants.dart';
 import 'package:jamat_timings/data/mock_data.dart';
 import 'package:jamat_timings/widgets/islamic_pattern_bg.dart';
 import 'package:jamat_timings/widgets/prayer_time_tile.dart';
@@ -223,7 +221,7 @@ class _MasjidDetailScreenState extends ConsumerState<MasjidDetailScreen> {
                     _buildSpecialTile(
                       context: context,
                       title: 'Taraweeh (Ramadan)',
-                      icon: Icons.star_border_purple_500,
+                      icon: Icons.star_border,
                       timings: masjidTimings
                           .where((t) => t.prayer.toLowerCase() == 'taraweeh')
                           .map((t) => 'Taraweeh: ${t.jamatTime}')

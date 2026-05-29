@@ -55,7 +55,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 40),
-            Icon(Icons.lock_reset, size: 80, color: AppTheme.primaryGreen.withOpacity(0.8)),
+            Icon(Icons.lock_reset, size: 80, color: AppTheme.primaryGreen.withValues(alpha: 0.8)),
             const SizedBox(height: 24),
             const Text(
               'Forgot Your Password?',

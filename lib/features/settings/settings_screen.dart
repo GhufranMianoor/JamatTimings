@@ -10,7 +10,6 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +32,7 @@ class SettingsScreen extends ConsumerWidget {
             secondary: const Icon(Icons.dark_mode),
             activeColor: AppTheme.primaryGreen,
           ),
-          
+
           // Data Management
           _buildSectionHeader('Data Management'),
           ListTile(
@@ -68,7 +67,7 @@ class SettingsScreen extends ConsumerWidget {
               );
             },
           ),
-          
+
           // Application About
           _buildSectionHeader('About App'),
           const ListTile(
@@ -77,9 +76,9 @@ class SettingsScreen extends ConsumerWidget {
             subtitle: Text('Find nearby mosques, track upcoming jama\'at times instantly, and save data offline.'),
             trailing: Text('v${AppConstants.appVersion}', style: TextStyle(color: Colors.grey)),
           ),
-          
+
           const Divider(height: 40),
-          
+
           // Admin Console entry point
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -102,13 +101,15 @@ class SettingsScreen extends ConsumerWidget {
   Widget _buildSectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 24, bottom: 8),
-      style: const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.bold,
-        color: AppTheme.primaryGreen,
-        letterSpacing: 0.5,
+      child: Text(
+        title.toUpperCase(),
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: AppTheme.primaryGreen,
+          letterSpacing: 0.5,
+        ),
       ),
-      child: Text(title.toUpperCase()),
     );
   }
 }

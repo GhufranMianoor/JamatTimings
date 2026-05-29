@@ -90,7 +90,7 @@ class MasjidCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
-                          color: AppTheme.getPrayerColor(nextPrayerName!).withOpacity(0.1),
+                          color: AppTheme.getPrayerColor(nextPrayerName!).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(

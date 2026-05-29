@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 class IslamicPatternBackground extends StatelessWidget {
@@ -33,7 +34,7 @@ class _IslamicPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = color.withOpacity(opacity)
+      ..color = color.withValues(alpha: opacity)
       ..strokeWidth = 1.0
       ..style = PaintingStyle.stroke;
 
@@ -45,36 +46,19 @@ class _IslamicPatternPainter extends CustomPainter {
       for (int j = 0; j < rows; j++) {
         final double cx = i * tileSize;
         final double cy = j * tileSize;
-
         _drawIslamicStar(canvas, Offset(cx, cy), tileSize / 2, paint);
       }
     }
   }
 
   void _drawIslamicStar(Canvas canvas, Offset center, double radius, Paint paint) {
-    final path = Path();
-    const int points = 8;
-    const double angleStep = 2 * 3.141592653589793 / points;
-
-    for (int i = 0; i < points; i++) {
-      final double outerAngle = i * angleStep;
-      final double innerAngle = outerAngle + angleStep / 2;
-
-      final double outerX = center.dx + radius * 0.9 * (i.isEven ? 1 : 0.7) * (i % 4 == 0 ? 1 : 0.95);
-      // Let's draw an elegant repeating 8-point geometric star
-      final double x1 = center.dx + radius * 0.9 * (i % 2 == 0 ? 1.0 : 0.6) * (i % 4 == 0 ? 1.0 : 0.9) * 0.8;
-      // We will draw simple lines connecting alternating vertices to form an elegant Islamic octagon star
-    }
-    
-    // Draw an elegant concentric geometric circle and an octagon
+    // Draw outer circle
     canvas.drawCircle(center, radius * 0.8, paint);
-    
+
+    // Draw an elegant octagon inside
     final octagonPath = Path();
     for (int i = 0; i < 8; i++) {
-      final double x = center.dx + radius * 0.7 * (i % 2 == 0 ? 1 : 0.95) * (i % 4 == 0 ? 1 : 0.92);
-      // Wait, simpler way to draw a perfect octagon:
-      final double angle = i * (2 * 3.14159 / 8);
-      final double px = center.dx + radius * 0.8 * (i % 2 == 0 ? 1 : 0.7) * (i % 4 == 0 ? 1 : 0.95);
+      final double angle = i * (2 * pi / 8) - pi / 8;
       final double dx = center.dx + radius * 0.8 * cos(angle);
       final double dy = center.dy + radius * 0.8 * sin(angle);
       if (i == 0) {
@@ -86,14 +70,20 @@ class _IslamicPatternPainter extends CustomPainter {
     octagonPath.close();
     canvas.drawPath(octagonPath, paint);
 
-    // Connecting lines for the geometric star grid
+    // Connecting lines for the geometric star grid (8-point star pattern)
     final starPath = Path();
     for (int i = 0; i < 8; i++) {
-      final double angle1 = i * (2 * 3.14159 / 8);
-      final double angle2 = (i + 3) * (2 * 3.14159 / 8);
-      
-      starPath.moveTo(center.dx + radius * 0.8 * cos(angle1), center.dy + radius * 0.8 * sin(angle1));
-      starPath.lineTo(center.dx + radius * 0.8 * cos(angle2), center.dy + radius * 0.8 * sin(angle2));
+      final double angle1 = i * (2 * pi / 8);
+      final double angle2 = (i + 3) * (2 * pi / 8);
+
+      starPath.moveTo(
+        center.dx + radius * 0.8 * cos(angle1),
+        center.dy + radius * 0.8 * sin(angle1),
+      );
+      starPath.lineTo(
+        center.dx + radius * 0.8 * cos(angle2),
+        center.dy + radius * 0.8 * sin(angle2),
+      );
     }
     canvas.drawPath(starPath, paint);
   }

@@ -104,7 +104,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       });
                       _onSearchChanged(_searchController.text);
                     },
-                    selectedColor: AppTheme.primaryGreen.withOpacity(0.2),
+                    selectedColor: AppTheme.primaryGreen.withValues(alpha: 0.2),
                     checkmarkColor: AppTheme.primaryGreen,
                     backgroundColor: Colors.white,
                   ),

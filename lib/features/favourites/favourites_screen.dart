@@ -44,7 +44,7 @@ class FavouritesScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.star_border, size: 80, color: AppTheme.primaryGreen.withOpacity(0.3)),
+            Icon(Icons.star_border, size: 80, color: AppTheme.primaryGreen.withValues(alpha: 0.3)),
             const SizedBox(height: 24),
             const Text(
               'No Favourites Yet',
