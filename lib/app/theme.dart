@@ -8,13 +8,13 @@ final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((r
 });
 
 class ThemeModeNotifier extends StateNotifier<ThemeMode> {
-  ThemeModeNotifier() : super(ThemeMode.light) {
+  ThemeModeNotifier() : super(ThemeMode.dark) {
     _loadTheme();
   }
 
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    final isDark = prefs.getBool('isDarkMode') ?? false;
+    final isDark = prefs.getBool('isDarkMode') ?? true;
     state = isDark ? ThemeMode.dark : ThemeMode.light;
   }
 
@@ -31,44 +31,43 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 }
 
 class AppTheme {
-  // Brand colors
-  static const Color primaryGreen = Color(0xFFC6A24A); // antique gold
-  static const Color accentGold = Color(0xFFD8C59A); // soft khaki
-  static const Color creamBackground = Color(0xFFF6EED9); // parchment cream
-  static const Color creamSurface = Color(0xFFFCF7EB);
-
-  static const Color darkPrimaryGreen = Color(0xFFE2C16D);
-  static const Color darkAccentGold = Color(0xFFC5B07A);
-  static const Color darkBackground = Color(0xFF17150F);
-  static const Color darkSurface = Color(0xFF231F17);
-  static const Color lightSurfaceVariant = Color(0xFFE7D9BB);
-  static const Color darkSurfaceVariant = Color(0xFF3A3224);
-  static const Color lightInk = Color(0xFF2B1E10);
-  static const Color darkInk = Color(0xFFF5E9CF);
-  static const Color warmBorder = Color(0xFFCCB47A);
-  static const Color darkBorder = Color(0xFF7D6A43);
+  static const Color pureBlack = Color(0xFF000000);
+  static const Color deepEmerald = Color(0xFF064E3B);
+  static const Color warmGold = Color(0xFFF59E0B);
+  static const Color burnishedGold = Color(0xFFD97706);
+  static const Color sageKhaki = Color(0xFFD4AF37);
+  static const Color darkCard = Color(0xFF121212);
+  static const Color darkCardAlt = Color(0xFF171717);
+  static const Color parchmentInk = Color(0xFFF6E9C8);
+  static const Color mutedInk = Color(0xFFB9A87D);
+  static const Color subtleBorder = Color(0x1A374151);
+  static const Color strongBorder = Color(0x40374151);
+  static const Color chipBorder = Color(0x264E5D56);
+  static const Color lightCanvas = Color(0xFFFAF3E3);
+  static const Color lightSurface = Color(0xFFFFF9EF);
+  static const Color lightInk = Color(0xFF241A10);
 
   // Prayer-specific colors
   static final Map<String, Color> prayerColors = {
-    'fajr': const Color(0xFF3F51B5),    // Indigo
-    'dhuhr': const Color(0xFFFF8F00),   // Amber
-    'asr': const Color(0xFFE65100),     // Deep Orange
-    'maghrib': const Color(0xFFB71C1C), // Deep Red
-    'isha': const Color(0xFF4A148C),    // Deep Purple
-    'jumuah': const Color(0xFF1B5E20),  // Deep Green
-    'taraweeh': const Color(0xFF00695C),// Teal
-    'eid': const Color(0xFFFFD600),     // Bright Gold
+    'fajr': const Color(0xFF90CAF9),
+    'dhuhr': warmGold,
+    'asr': burnishedGold,
+    'maghrib': const Color(0xFFDC8B5B),
+    'isha': const Color(0xFF5EEAD4),
+    'jumuah': sageKhaki,
+    'taraweeh': deepEmerald,
+    'eid': const Color(0xFFFFD54F),
   };
 
   static Color getPrayerColor(String prayer) {
-    return prayerColors[prayer.toLowerCase()] ?? primaryGreen;
+    return prayerColors[prayer.toLowerCase()] ?? sageKhaki;
   }
 
-  static TextTheme _amiriTextTheme(Brightness brightness) {
+  static TextTheme _luxuryTextTheme(Brightness brightness) {
     final base = brightness == Brightness.dark ? ThemeData.dark().textTheme : ThemeData.light().textTheme;
-    final textColor = brightness == Brightness.dark ? darkInk : lightInk;
+    final textColor = brightness == Brightness.dark ? parchmentInk : lightInk;
 
-    return GoogleFonts.amiriTextTheme(base).copyWith(
+    return GoogleFonts.interTextTheme(base).copyWith(
       displayLarge: GoogleFonts.amiri(
         fontWeight: FontWeight.w700,
         fontSize: 34,
@@ -132,33 +131,33 @@ class AppTheme {
 
   static ColorScheme _lightColorScheme() {
     return const ColorScheme.light(
-      primary: primaryGreen,
-      onPrimary: lightInk,
-      secondary: accentGold,
-      onSecondary: lightInk,
-      tertiary: Color(0xFF6F7D4A),
-      onTertiary: Colors.white,
-      surface: creamSurface,
+      primary: burnishedGold,
+      onPrimary: Colors.white,
+      secondary: deepEmerald,
+      onSecondary: Colors.white,
+      tertiary: sageKhaki,
+      onTertiary: Colors.black,
+      surface: lightSurface,
       onSurface: lightInk,
       error: Color(0xFFB3261E),
       onError: Colors.white,
-      outline: warmBorder,
+      outline: strongBorder,
     );
   }
 
   static ColorScheme _darkColorScheme() {
     return const ColorScheme.dark(
-      primary: darkPrimaryGreen,
-      onPrimary: darkBackground,
-      secondary: darkAccentGold,
-      onSecondary: darkBackground,
-      tertiary: Color(0xFF8F9E67),
-      onTertiary: darkBackground,
-      surface: darkSurface,
-      onSurface: darkInk,
+      primary: warmGold,
+      onPrimary: pureBlack,
+      secondary: deepEmerald,
+      onSecondary: parchmentInk,
+      tertiary: sageKhaki,
+      onTertiary: pureBlack,
+      surface: darkCard,
+      onSurface: parchmentInk,
       error: Color(0xFFF2B8B5),
-      onError: darkBackground,
-      outline: darkBorder,
+      onError: pureBlack,
+      outline: subtleBorder,
     );
   }
 
@@ -166,30 +165,30 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: _lightColorScheme(),
-      scaffoldBackgroundColor: creamBackground,
-      canvasColor: creamBackground,
-      textTheme: _amiriTextTheme(Brightness.light),
+      scaffoldBackgroundColor: lightCanvas,
+      canvasColor: lightCanvas,
+      textTheme: _luxuryTextTheme(Brightness.light),
       appBarTheme: const AppBarTheme(
-        backgroundColor: creamSurface,
+        backgroundColor: lightSurface,
         foregroundColor: lightInk,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
       ),
       cardTheme: CardThemeData(
-        color: creamSurface,
+        color: lightSurface,
         elevation: 1,
         margin: EdgeInsets.zero,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: lightSurfaceVariant, width: 1),
+          side: const BorderSide(color: strongBorder, width: 1),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryGreen,
-          foregroundColor: lightInk,
+          backgroundColor: warmGold,
+          foregroundColor: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
@@ -197,60 +196,60 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: creamSurface,
+        fillColor: lightSurface,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: warmBorder),
+          borderSide: const BorderSide(color: strongBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: primaryGreen, width: 1.5),
+          borderSide: const BorderSide(color: warmGold, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: lightSurfaceVariant),
+          borderSide: const BorderSide(color: subtleBorder),
         ),
         labelStyle: const TextStyle(color: lightInk),
-        hintStyle: const TextStyle(color: Color(0xFF6E5E43)),
+        hintStyle: const TextStyle(color: Color(0xFF705B3B)),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: const Color(0xFFF1E5C7),
-        selectedColor: accentGold,
+        backgroundColor: const Color(0xFFF0E3C8),
+        selectedColor: warmGold,
         labelStyle: const TextStyle(color: lightInk),
-        side: const BorderSide(color: lightSurfaceVariant),
+        side: const BorderSide(color: subtleBorder),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       ),
       dividerTheme: const DividerThemeData(
-        color: lightSurfaceVariant,
+        color: subtleBorder,
         thickness: 1,
         space: 1,
       ),
-      iconTheme: const IconThemeData(color: primaryGreen),
+      iconTheme: const IconThemeData(color: burnishedGold),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: primaryGreen,
-        foregroundColor: lightInk,
+        backgroundColor: warmGold,
+        foregroundColor: Colors.white,
         elevation: 2,
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: creamSurface,
-        indicatorColor: const Color(0xFFF1E5C7),
+        backgroundColor: lightSurface,
+        indicatorColor: const Color(0x33F59E0B),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return TextStyle(
-            color: selected ? lightInk : const Color(0xFF6E5E43),
+            color: selected ? lightInk : const Color(0xFF705B3B),
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
-          return IconThemeData(color: selected ? primaryGreen : const Color(0xFF8D7B5A));
+          return IconThemeData(color: selected ? burnishedGold : const Color(0xFF8D7B5A));
         }),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: lightInk,
-          side: const BorderSide(color: warmBorder),
+          side: const BorderSide(color: strongBorder),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
         ),
@@ -262,30 +261,30 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: _darkColorScheme(),
-      scaffoldBackgroundColor: darkBackground,
-      canvasColor: darkBackground,
-      textTheme: _amiriTextTheme(Brightness.dark),
+      scaffoldBackgroundColor: pureBlack,
+      canvasColor: pureBlack,
+      textTheme: _luxuryTextTheme(Brightness.dark),
       appBarTheme: const AppBarTheme(
-        backgroundColor: darkSurface,
-        foregroundColor: darkInk,
+        backgroundColor: darkCard,
+        foregroundColor: parchmentInk,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
       ),
       cardTheme: CardThemeData(
-        color: darkSurface,
-        elevation: 0,
+        color: darkCard,
+        elevation: 12,
         margin: EdgeInsets.zero,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: darkSurfaceVariant, width: 1),
+          side: const BorderSide(color: subtleBorder, width: 1),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: darkPrimaryGreen,
-          foregroundColor: darkBackground,
+          backgroundColor: warmGold,
+          foregroundColor: pureBlack,
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
@@ -293,60 +292,60 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: darkSurface,
+        fillColor: darkCardAlt,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: darkBorder),
+          borderSide: const BorderSide(color: subtleBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: darkPrimaryGreen, width: 1.5),
+          borderSide: const BorderSide(color: warmGold, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: darkSurfaceVariant),
+          borderSide: const BorderSide(color: subtleBorder),
         ),
-        labelStyle: const TextStyle(color: darkInk),
-        hintStyle: const TextStyle(color: Color(0xFFBFAE8D)),
+        labelStyle: const TextStyle(color: parchmentInk),
+        hintStyle: const TextStyle(color: mutedInk),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: darkSurfaceVariant,
-        selectedColor: darkAccentGold,
-        labelStyle: const TextStyle(color: darkInk),
-        side: const BorderSide(color: darkBorder),
+        backgroundColor: const Color(0xFF1E1E1E),
+        selectedColor: const Color(0xFF123C2C),
+        labelStyle: const TextStyle(color: parchmentInk),
+        side: const BorderSide(color: chipBorder),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       ),
       dividerTheme: const DividerThemeData(
-        color: darkSurfaceVariant,
+        color: subtleBorder,
         thickness: 1,
         space: 1,
       ),
-      iconTheme: const IconThemeData(color: darkPrimaryGreen),
+      iconTheme: const IconThemeData(color: warmGold),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: darkPrimaryGreen,
-        foregroundColor: darkBackground,
-        elevation: 2,
+        backgroundColor: warmGold,
+        foregroundColor: pureBlack,
+        elevation: 8,
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: darkSurface,
-        indicatorColor: darkSurfaceVariant,
+        backgroundColor: darkCard,
+        indicatorColor: const Color(0x33264E3B),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return TextStyle(
-            color: selected ? darkInk : const Color(0xFFBFAE8D),
+            color: selected ? parchmentInk : mutedInk,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
-          return IconThemeData(color: selected ? darkPrimaryGreen : const Color(0xFF9B8A67));
+          return IconThemeData(color: selected ? warmGold : mutedInk);
         }),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: darkInk,
-          side: const BorderSide(color: darkBorder),
+          foregroundColor: parchmentInk,
+          side: const BorderSide(color: subtleBorder),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
         ),
